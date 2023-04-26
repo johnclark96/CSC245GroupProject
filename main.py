@@ -1,18 +1,26 @@
-# IMPORTS
+# BEGINNING OF IMPORTS
 import numpy as np  # linear algebra
-import pandas as pd  #
-import xgboost as xgb  #
+import pandas as pd
+import xgboost as xgb #xgboost should be importing for something? get rid of it if it isn't?
 import matplotlib.pyplot as plt
-# import sklearn as sklearn
-import warnings  #
-import datetime  #
+import warnings
+import datetime
+
+# END OF IMPORTS
+
+# NOTES:
+# df is short for DataFrames (Data is stored inside Dataframes)
 
 warnings.filterwarnings('ignore')
 
+# TODO: Understand the DataSets provided (What does Application Record consist of? What is Credit Record and how do you read it?)
 df_application = pd.read_csv('data/application_record.csv')  # df_application reads the application_record excel sheet.
+df_credit = pd.read_csv('data/credit_record.csv') # Applicant Credit Records
 
-df_credit = pd.read_csv('data/credit_record.csv')
+# BEGINNING OF INITIAL DATA READ
 
+# The Code below outputs what the datas "shape" or how the data is seen.
+# Shape will show how much data and how many columns are present.
 print("Shape of application data", df_application.shape)
 print("-------------------------------------------")
 print("Shape of credit data", df_credit.shape)
@@ -41,17 +49,28 @@ print("categorical columns in application data", cat_credit_data)
 print("--------------------------------------------------------------------------------")
 print("numerical columns in application data", num_credit_data)
 
-df_application.sample(5)
+# END OF INITIAL DATA READ
 
+# START OF DATA
+# TODO: What is Sample doing here?
+df_application.sample(5)
 df_credit.sample(5)
 
-df_final = pd.merge(df_application, df_credit, on='ID', how='inner')
 
-df_final.shape
+# TODO: what is on and how?
+# on='ID' appears to be taking the ID columns?
+# how='inner' TODO: Someone tell me what that means? (Hint: probably could mouse over pd.merge to see what it does)
+df_final = pd.merge(df_application, df_credit, on='ID', how='inner') # merging the 2 data together?
+
+df_final.shape # Shapes the data
 
 df_final.columns
 
 df_final.describe().T
+
+
+# ------------------------------- ANYTHING BELOW THIS LINE I DID NOT REALLY COMMENT --------------------
+# Will go through this later
 
 # Earliest Month
 credit_card_first_month = df_final.groupby(['ID']).agg(
@@ -75,12 +94,11 @@ credit_start_status.head()
 
 credit_start_status['STATUS'].value_counts()
 
-accounts_counts = pd.DataFrame({'start_month': credit_start_status.groupby('start_month')['start_month'].count()})
-
-#GRAPH-PLOT
+#FIGURE-1-GRAPH
+accounts_counts =pd.DataFrame({'start_month':credit_start_status.groupby('start_month')['start_month'].count()})
 fig = plt.figure()
-ax = fig.add_axes([0, 0, 1, 1])
-ax.bar(accounts_counts.index, accounts_counts['start_month'])
+ax = fig.add_axes([0,0,1,1])
+ax.bar(accounts_counts.index,accounts_counts['start_month'])
 plt.show()
 
 month_status_counts = credit_start_status.groupby(['start_month', 'STATUS']).size().reset_index(name='counts')
