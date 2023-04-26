@@ -9,8 +9,8 @@
 # Team Members
  - Michael - (Team Leader | Documentation/Cloud)
  - Ryan - (Assistant Team Leader | )
- - Jay - ()
- - Doyinonas - ()
+ - Jay - (Team Member | )
+ - Doyinonas - (Team Member | Data Analyst)
 
 # DATA SOURCE
 
